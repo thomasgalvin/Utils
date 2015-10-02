@@ -1,7 +1,6 @@
 package galvin;
 
-public class KeyValue<K,V>
-{
+public class KeyValue<K, V> {
     private K key;
     private V value;
 
@@ -28,5 +27,5 @@ public class KeyValue<K,V>
     public void setValue( V value ) {
         this.value = value;
     }
-    
+
 }

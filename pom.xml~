@@ -5,10 +5,10 @@
     <groupId>galvin</groupId>
     <artifactId>Utils</artifactId>
     <version>1.0.0</version>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
     <description>
-        Misc utilities that don't really belong anywhere else.
+        A collection of utility projects.
     </description>
 
     <properties>
@@ -29,12 +29,8 @@
         </plugins>
     </build>
     
-    <dependencies>
-        <dependency>
-            <groupId>com.galvin.deps</groupId>
-            <artifactId>ApacheCommons</artifactId>
-            <version>1.0</version>
-            <type>pom</type>
-        </dependency>
-    </dependencies>
+    <modules>
+        <module>CommonUtils</module>
+        <module>SwingUtils</module>
+    </modules>
 </project>
