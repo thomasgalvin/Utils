@@ -1,7 +1,9 @@
 package galvin;
 
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Properties;
 
@@ -143,6 +145,44 @@ public final class SystemUtils {
         long total = Runtime.getRuntime().totalMemory() / 1048576;
         System.out.println( "Total memory available to JVM (megabytes): "
                             + total );
+    }
+
+    public static void selectFileInBrowser( File file )
+        throws IOException {
+        if( SystemUtils.IS_WINDOWS ) {
+            String command = "explorer.exe /select,\"" + file.getAbsolutePath() + "\"";
+            Runtime.getRuntime().exec( command );
+        }
+        else if( SystemUtils.IS_MAC ) {
+            String[] args = new String[]{
+                "open", "-R", file.getAbsolutePath()
+            };
+
+            Process p = Runtime.getRuntime().exec( args );
+
+            try {
+                p.waitFor();
+            }
+            catch( Throwable t ) {
+                t.printStackTrace();
+            }
+
+//            InputStream error = p.getErrorStream();
+//            String errorMessage = StringIo.readStringFromInputStream( error );
+//            System.out.println( "process error:" );
+//            System.out.println( errorMessage );
+//
+//            InputStream processInput = p.getInputStream();
+//            String processMessage = StringIo.readStringFromInputStream( processInput );
+//            System.out.println( "process message:" );
+//            System.out.println( processMessage );
+        }
+        else {
+            File parent = file.getParentFile();
+            if( parent != null ) {
+                Desktop.getDesktop().open( file );
+            }
+        }
     }
 
 }
