@@ -127,7 +127,7 @@ public class LanguageCode
         }
         else
         {
-            throw new IOException( "Unable to loead language-codes.dat." );
+            throw new IOException( "Unable to load language-codes.dat." );
         }
         
         return codes;
