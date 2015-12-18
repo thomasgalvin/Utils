@@ -2,6 +2,10 @@ package galvin;
 
 public class Lorem
 {
+    public static String shortLoremIpsum() {
+        return "Lorem ipsum dol amet sitor, consectetuer adipiscing elit. Donec dui. Integer tortor. Praesent adipiscing nibh sit amet lacus.";
+    }
+    
     public static String loremIpsum() {
         return "Lorem ipsum dol amet sitor, consectetuer adipiscing elit. Donec dui. Integer tortor. Praesent adipiscing nibh sit amet lacus. Ut ut lorem et mi dignissim condimentum. Maecenas ac lectus quis pede dictum tempor. Proin convallis pede non lacus. Etiam nonummy arcu sit amet justo. Nulla et magna a justo mollis venenatis. Donec eros. Praesent luctus urna sed mauris. Aliquam ultrices. Donec imperdiet, mi eu consequat sollicitudin, diam erat molestie nulla, sit amet molestie ligula orci quis pede. Morbi pretium augue vel nibh. Donec et urna eget lacus aliquet fringilla. Praesent fringilla massa nec magna. Nunc sodales sem a dolor. Ut congue, risus fermentum sagittis lacinia, odio ligula vestibulum leo, eu sollicitudin lacus est vel mi. Quisque eros tellus, laoreet vel, convallis id, cursus in, lorem.";
     }
