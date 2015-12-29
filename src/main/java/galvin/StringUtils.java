@@ -87,6 +87,7 @@ public final class StringUtils
 
     public static String camelCase( String string ) {
         StringBuilder builder = new StringBuilder( string.length() );
+        string = string.toLowerCase();
 
         boolean whitespaceMode = true;
         for( char c : string.toCharArray() ) {
