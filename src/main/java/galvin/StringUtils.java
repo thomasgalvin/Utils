@@ -108,6 +108,16 @@ public final class StringUtils
 
         return builder.toString();
     }
+    
+    public static boolean contains( String[] array, String target ){
+        for( String string : array ){
+            if( target.equals( string ) ){
+                return true;
+            }
+        }
+        
+        return false;
+    }
 
     public static String csv( Collection<String> strings ) {
         StringBuilder builder = new StringBuilder();
