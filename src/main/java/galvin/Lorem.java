@@ -30,6 +30,10 @@ public class Lorem
         return result.toString();
     }
     
+    public static String jabberwockyIntro(){
+        return "A nonsense poem written by Lewis Carroll about the killing of an animal called \"the Jabberwock\". It was included in his 1871 novel *Through the Looking-Glass, and What Alice Found There*, a sequel to *Alice's Adventures in Wonderland*. -Wikipedia";
+    }
+    
     public static String jabberwocky()
     {
         return "The Jabberwocky" + "  \n"
@@ -65,6 +69,10 @@ public class Lorem
                + "Did gyre and gimble in the wabe;" + "  \n"
                + "All mimsy were the borogoves," + "  \n"
                + "And the mome raths outgrabe.";
+    }
+    
+    public static String ravenIntro(){
+        return "Edgar Allen Poe's classic tale of loss and horror.";
     }
     
     public static String raven()
