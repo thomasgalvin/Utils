@@ -1,12 +1,21 @@
 package galvin;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class FileUtils extends org.apache.commons.io.FileUtils {
     private static final Logger logger = LoggerFactory.getLogger( FileUtils.class );
+    
+    public static void copyDirectoryToDirectory( File srcDir, File destDir, boolean parseChecsums ) throws IOException {
+        copyDirectoryToDirectory( srcDir, destDir, parseChecsums, null, false );
+    }
+    
+    public static void copyDirectoryToDirectory( File srcDir, File destDir, boolean parseChecsums, FileFilter fileFilter ) throws IOException {
+        copyDirectoryToDirectory( srcDir, destDir, parseChecsums, null, false );
+    }
     
     /**
      * Merges the contents of srcDir into destDir. If two files with the same
@@ -15,10 +24,13 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
      * @param srcDir the source dir
      * @param destDir the target dir
      * @param parseChecsums parse checksums of conflicting files
+     * @param fileFilter used to ignore files
+     * @param verbose if true, each file copied will be logged
      * @throws IOException on error
      */
-    public static void copyDirectoryToDirectory( File srcDir, File destDir, boolean parseChecsums ) throws IOException {
-        if( !parseChecsums ) {
+    public static void copyDirectoryToDirectory( File srcDir, File destDir, boolean parseChecsums, FileFilter fileFilter, boolean verbose ) throws IOException {
+    
+        if( !parseChecsums && fileFilter == null ) {
             copyDirectoryToDirectory( srcDir, destDir );
         }
         else {
@@ -39,24 +51,34 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
             File[] destFiles = destDir.listFiles();
 
             for( File srcFile : srcFiles ) {
-                if( srcFile.isDirectory() ){
-                    File newDest = new File( destDir, srcFile.getName() );
-                    copyDirectoryToDirectory( srcFile, newDest, parseChecsums );
-                }
-                else {
-                    File matchingFile = findMatchingName( srcFile, destFiles );
-                    boolean doCopy = true;
-
-                    if( matchingFile != null ){
-                        long checksumOne = checksumCRC32( srcFile );
-                        long checksumTwo = checksumCRC32( matchingFile );
-                        doCopy = checksumOne != checksumTwo;
+                if( fileFilter == null || fileFilter.accept( srcFile ) )
+                {
+                    if( srcFile.isDirectory() ){
+                        if( verbose ){
+                            logger.info( "copying: " + srcFile.getName() + " to " + destDir.getAbsolutePath() );
+                        }
+                        
+                        File newDest = new File( destDir, srcFile.getName() );
+                        copyDirectoryToDirectory( srcFile, newDest, parseChecsums, fileFilter, verbose );
                     }
+                    else {
+                        File matchingFile = findMatchingName( srcFile, destFiles );
+                        boolean doCopy = true;
 
-                    if( doCopy ){
-                        logger.info( "copying: " + srcFile.getName() + " to " + destDir.getAbsolutePath() );
-                        File destFile = new File( destDir, srcFile.getName() );
-                        copyFile( srcFile, destFile );
+                        if( matchingFile != null ){
+                            long checksumOne = checksumCRC32( srcFile );
+                            long checksumTwo = checksumCRC32( matchingFile );
+                            doCopy = checksumOne != checksumTwo;
+                        }
+
+                        if( doCopy ){
+                            if( verbose ){
+                                logger.info( "copying: " + srcFile.getName() + " to " + destDir.getAbsolutePath() );
+                            }
+                            
+                            File destFile = new File( destDir, srcFile.getName() );
+                            copyFile( srcFile, destFile );
+                        }
                     }
                 }
             }
