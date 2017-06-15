@@ -140,10 +140,7 @@ public final class StringUtils
     }
 
     public static boolean empty( String string ) {
-        if( string == null || string.trim().length() <= 0 ) {
-            return true;
-        }
-        return false;
+        return string == null || string.trim().length() == 0;
     }
 
     public static String getOrdinal( int number ) {
