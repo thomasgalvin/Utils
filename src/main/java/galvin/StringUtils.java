@@ -222,17 +222,20 @@ public final class StringUtils
         return target.toString();
     }
 
-    public static void replaceAll( StringBuilder target,
+    public static int replaceAll( StringBuilder target,
                                    String oldText,
                                    String newText,
                                    boolean ignorCase ) {
+        int count = 0;
+        
         if( target != null && oldText != null && newText != null ) {
             if( ignorCase ) {
                 StringBuilder noCaseTarget = new StringBuilder( target.toString().toLowerCase() );
                 String noCaseOldText = oldText.toLowerCase();
 
-                int index = index = noCaseTarget.indexOf( noCaseOldText );
+                int index = noCaseTarget.indexOf( noCaseOldText );
                 while( index != -1 ) {
+                    count++;
                     int endIndex = index + oldText.length();
                     target.replace( index, endIndex, newText );
                     noCaseTarget.replace( index, endIndex, newText );
@@ -241,8 +244,9 @@ public final class StringUtils
                 }
             }
             else {
-                int index = index = target.indexOf( oldText );
+                int index = target.indexOf( oldText );
                 while( index != -1 ) {
+                    count++;
                     int endIndex = index + oldText.length();
                     target.replace( index, endIndex, newText );
                     endIndex = index + newText.length();
@@ -250,6 +254,8 @@ public final class StringUtils
                 }
             }
         }
+        
+        return count;
     }
 
     public static String reverseChars( String target ) {
