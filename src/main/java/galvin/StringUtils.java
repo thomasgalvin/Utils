@@ -182,6 +182,18 @@ public final class StringUtils
     public static String neverNull( String string ) {
         return ( string == null ? "" : string );
     }
+    
+    public static String padTo( String string, int length ){
+        StringBuilder result = new StringBuilder(length);
+        result.append(string);
+        
+        int diff = length - string.length();
+        for(int i = 0; i < diff; i++ ){
+            result.append( " " );
+        }
+        
+        return result.toString();
+    }
 
     public static String replaceAll( String target,
                                      String oldText,
@@ -304,6 +316,39 @@ public final class StringUtils
         return s;
     }
 
+    public static String sideBySide( String left, String right ){
+        final String separator = "   |   ";
+        
+        String[] one = left.split( "\n" );
+        String[] two = right.split( "\n" );
+        int lineCount = Math.max(one.length, two.length);
+        int longestLine = 0;
+        
+        for( String line : one ){
+            longestLine = Math.max(longestLine, line.length() );
+        }
+        
+        for( String line : two ){
+            longestLine = Math.max(longestLine, line.length() );
+        }
+        
+        int length = longestLine * lineCount * 2;
+        length += (separator.length()+1) * lineCount;
+        StringBuilder result = new StringBuilder(length);
+        
+        for( int i = 0; i < lineCount; i++ ){
+            String a = padTo( i < one.length ? one[i] : "", longestLine );
+            String b = padTo( i < two.length ? two[i] : "", longestLine );
+            
+            result.append(a);
+            result.append(separator);
+            result.append(b);
+            result.append("\n");
+        }
+        
+        return result.toString();
+    }
+    
     public static String spacesToTabs( String text, int spacesPerTab ) {
         if( text != null
             && text.length() > 0
