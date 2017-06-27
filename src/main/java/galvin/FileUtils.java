@@ -2,7 +2,11 @@ package galvin;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URL;
+import java.nio.charset.Charset;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -168,5 +172,43 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
         }
         
         return true;
+    }
+    
+    public static String readFile(String fileName){
+        return readFile( fileName, Charset.defaultCharset() );
+    }
+    
+    public static String readFile(String fileName, Charset charset){
+        try{
+            File file = new File(fileName);
+            FileInputStream fin = new FileInputStream(file);
+            String result = IOUtils.toString(fin, charset);
+            IOUtils.closeQuietly(fin);
+            return result;
+        }
+        catch(IOException ioe){
+            logger.debug( "Error reading resource", ioe );
+            return null;
+        }
+    }
+    
+    public static String readResource(String name){
+        return readResource( name, Charset.defaultCharset() );
+    }
+    
+    public static String readResource(String name, Charset charset){
+        try{
+            URL url = FileUtils.class.getClassLoader().getResource(name);
+            if( url == null ){
+                logger.debug( "Unable to locate resourc: " + name );
+                return null;
+            }
+            String content = IOUtils.toString( url, charset );
+            return content;
+        }
+        catch(IOException ioe){
+            logger.debug( "Error reading resource", ioe );
+            return null;
+        }
     }
 }
